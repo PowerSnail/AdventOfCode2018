@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# Build DIR
+build/*
+
+# Inputs
+inputs/*
+
+# Temp
+tmp/*
