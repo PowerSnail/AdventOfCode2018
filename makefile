@@ -14,4 +14,11 @@ day1-part2: src/day1-part2.o
 
 day1: day1-part1 day1-part2
 
+day2: src/day2.o
+	$(CXX) $(CPPFLAGS) -o build/day2 src/day2.o 
+
 all: day1
+
+clean:
+	rm src/*.o
+	rm build/*
