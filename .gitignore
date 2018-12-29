@@ -39,3 +39,6 @@ inputs/*
 
 # Temp
 tmp/*
+
+# vscode
+.vscode/*
