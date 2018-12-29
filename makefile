@@ -1,19 +1,17 @@
 # Variables
 CXX=clang++
-CPPFLAGS=-Wall -O2 --std=c++17
-OUTPUT_DIR=build
-OBJ_DAY1=src/day1.o
-TEST_INPUT=
+CPPFLAGS=-Wall -O2 --std=c++17 -Iinclude
 
 # Suffix Rules
 .SUFFIXES: .o .cpp
 
 # Build
-day1: $(OBJ_DAY1)
-	$(CXX) $(CPPFLAGS) $(OBJ_DAY1) -o $(OUTPUT_DIR)/day1
+day1-part1: src/day1-part1.o
+	$(CXX) $(CPPFLAGS) -o build/day1-part1 src/day1-part1.o 
 
+day1-part2: src/day1-part2.o
+	$(CXX) $(CPPFLAGS) -o build/day1-part2 src/day1-part2.o 
 
-# Test
-test-day1: $(TEST_INPUT) day1
-	build/day1 < $(TEST_INPUT)
-	
+day1: day1-part1 day1-part2
+
+all: day1

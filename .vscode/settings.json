@@ -1,0 +1,10 @@
+{
+    "C_Cpp.clang_format_sortIncludes": true,
+    "C_Cpp.clang_format_style": "google",
+    "C_Cpp.default.compilerPath": "clang++",
+    "C_Cpp.clang_format_path": "/usr/bin/clang-format",
+    "C_Cpp.default.cppStandard": "c++17",
+    "files.associations": {
+        "iostream": "cpp"
+    }
+}
