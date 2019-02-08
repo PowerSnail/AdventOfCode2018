@@ -60,9 +60,12 @@ fabric. How many square inches of fabric are within two or more claims?
 
 --- Part Two ---
 
-Amidst the chaos, you notice that exactly one claim doesn't overlap by even a single square inch of fabric with any other claim. If you can somehow draw attention to it, maybe the Elves will be able to make Santa's suit after all!
+Amidst the chaos, you notice that exactly one claim doesn't overlap by even a
+single square inch of fabric with any other claim. If you can somehow draw
+attention to it, maybe the Elves will be able to make Santa's suit after all!
 
-For example, in the claims above, only claim 3 is intact after all claims are made.
+For example, in the claims above, only claim 3 is intact after all claims are
+made.
 
 What is the ID of the only claim that doesn't overlap?
 
@@ -79,13 +82,14 @@ using std::string;
 using std::vector;
 
 struct Rectangle {
+  int id;
   int left;
   int top;
-  int width;
-  int height;
+  int right;
+  int bottom;
 
-  Rectangle(int left, int top, int width, int height)
-      : left(left), top(top), width(width), height(height) {}
+  Rectangle(int id, int left, int top, int right, int bottom)
+      : id(id), left(left), top(top), right(right), bottom(bottom) {}
 };
 
 Rectangle ParseRectangle(const string& input) {
@@ -94,14 +98,14 @@ Rectangle ParseRectangle(const string& input) {
   auto colon = input.find(":", comma);
   auto x = input.find("x", colon);
 
+  int id = std::stoi(input.substr(1, at - 1));
   int left = std::stoi(input.substr(at + 2, comma - at - 2));
   int top = std::stoi(input.substr(comma + 1, colon - comma - 1));
   int width = std::stoi(input.substr(colon + 2, x - colon - 2));
   int height = std::stoi(input.substr(x + 1));
 
-  return Rectangle(left, top, width, height);
+  return Rectangle(id, left, top, width + left, height + top);
 }
-
 
 int main() {
   string line;
@@ -112,8 +116,8 @@ int main() {
     auto rect = ParseRectangle(line);
     rects.push_back(rect);
 
-    max_w = std::max(max_w, rect.left + rect.width);
-    max_h = std::max(max_h, rect.top + rect.height);
+    max_w = std::max(max_w, rect.right);
+    max_h = std::max(max_h, rect.bottom);
   }
 
   int area_overlap = 0;
@@ -121,7 +125,8 @@ int main() {
     for (int y = 0; y < max_h; ++y) {
       bool in_another = false;
       for (const auto& rect : rects) {
-        if (x > rect.left && x <= rect.left + rect.width && y > rect.top && y <= rect.top + rect.height) {
+        if (x > rect.left && x <= rect.right && y > rect.top &&
+            y <= rect.bottom) {
           if (in_another) {
             area_overlap += 1;
             break;
@@ -134,6 +139,23 @@ int main() {
   }
 
   cout << "total area overlapped = " << area_overlap << endl;
+
+  vector<int> has_overlapping(rects.size(), -1);
+  for (int i = 0; i < rects.size(); ++i) {
+    for (int j = i + 1; j < rects.size(); ++j) {
+      int w = std::max(0, std::min(rects[i].right, rects[j].right) -
+                              std::max(rects[i].left, rects[j].left));
+      int h = std::max(0, std::min(rects[i].bottom, rects[j].bottom) -
+                              std::max(rects[i].top, rects[j].top));
+      if (w * h > 0) {
+        has_overlapping[i] = rects[j].id;
+        has_overlapping[j] = rects[i].id;
+      }
+    }
+    if (has_overlapping[i] == -1) {
+      cout << "Non-overlapping id = " << rects[i].id << endl;
+    }
+  }
 
   return 0;
 }
