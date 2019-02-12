@@ -20,6 +20,9 @@ day2: src/day2.o
 day3: src/day3.o
 	$(CXX) $(CPPFLAGS) -o build/day3 src/day3.o
 
+day4: src/day4.o
+	$(CXX) $(CPPFLAGS) -o build/day4 src/day4.o
+
 all: day1 day2 day3
 
 clean:
